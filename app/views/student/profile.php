@@ -69,6 +69,7 @@ include "./app/views/sidebar.php";
                                             <input
                                                 type="text"
                                                 class="form-control"
+                                                name="key_word"
                                                 placeholder="Enter keywords"
                                             />
                                         </div>
@@ -76,19 +77,20 @@ include "./app/views/sidebar.php";
                                     <div class="col-md-3 pr-1">
                                         <div class="form-group">
                                             <label>Job types</label>
+                                            <input type="hidden" name="job_type_hidden" value="" />
                                             <select
                                                 class="selectpicker"
                                                 data-style="btn btn-primary btn-round btn-block"
                                                 multiple
-                                                title="Any Classification"
+                                                title="Please choose"
+                                                name="job_type"
                                                 data-size="7">
-                                                <option value="1">Accounting</option>
-                                                <option value="2">Administration</option>
-                                                <option value="3">Advertising</option>
-                                                <option value="4">Banking</option>
-                                                <option value="5">CEO</option>
-                                                <option value="6">Construction</option>
-                                                <option value="7">Consulting and Strategy</option>
+                                                <?php
+                                                    if (!empty($jobTypes)) {
+                                                        foreach ($jobTypes as $jobType) {
+                                                ?>
+                                                <option value="<?php echo $jobType->id ?>"><?php echo $jobType->name ?></option>
+                                                <?php }} ?>
                                             </select>
                                         </div>
                                     </div>
@@ -97,35 +99,37 @@ include "./app/views/sidebar.php";
                                             <label>Where</label>
                                             <input
                                                 type="text"
+                                                name="where_search"
                                                 class="form-control"
                                                 placeholder="Hobart,..."
                                             />
                                         </div>
                                         <div class="form-group col-md-4" style="display: inline" >
-                                            <button class="btn btn-primary">Search</button>
+                                            <a href="javascript:void(0)" class="btn btn-primary" onclick="changePage()">Search</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 job-list">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 list-job">
+                                            <?php
+                                            if ($jobs['total']) {
+                                            foreach ($jobs['data'] as $job) {
+                                            ?>
                                             <div class="card card-job">
                                                 <div class="card-header">
                                                     <h4 class="card-title">
-                                                        <a href="job.html">Room Leader - Pagewood</a>
+                                                        <a href="job.html"><?php echo $job->title ?></a>
                                                     </h4>
-                                                    <img class="img" src="https://www.seek.com.au/logos/Jobseeker/Thumbnail/9218"/>
+                                                    <img class="img" src="<?php echo $job->image ?>"/>
                                                 </div>
                                                 <div class="card-body">
                                                     <p>
-                                                        Join a leading Australian Early Education
-                                                        Company<br />
-                                                        Lead a passionate team<br />
-                                                        New and innovative centre<br />
+                                                        <?php echo $job->content ?>
                                                     </p>
                                                     <h6>
                                                         <i class="ti-time"></i>
-                                                        11 hours ago via LinkedIn
+                                                        <?php echo $job->last_date ?>
                                                     </h6>
                                                 </div>
                                                 <hr />
@@ -136,57 +140,30 @@ include "./app/views/sidebar.php";
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card card-job">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <a href="job.html">Room Leader - Pagewood</a>
-                                                    </h4>
-                                                    <img class="img" src="https://www.seek.com.au/logos/Jobseeker/Thumbnail/9218"/>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p>
-                                                        Join a leading Australian Early Education
-                                                        Company<br />
-                                                        Lead a passionate team<br />
-                                                        New and innovative centre<br />
-                                                    </p>
-                                                    <h6>
-                                                        <i class="ti-time"></i>
-                                                        11 hours ago via LinkedIn
-                                                    </h6>
-                                                </div>
-                                                <hr />
-                                                <div class="card-footer">
-                                                    <div class="stats">
-                                                        <i class="now-ui-icons ui-2_favourite-28"></i>
-                                                        Save
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <?php }} ?>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="current_page" value="1" />
+                                    <input type="hidden" name="total_page" value="<?php echo $jobs['total'] ?>" />
                                     <nav class="job-pagination" aria-label="pagination">
                                         <ul class="pagination">
                                             <li class="page-item">
-                                                <a href="#" class="page-link">
+                                                <a href="javascript:void(0)" onclick="prevPage()" class="page-link">
 											<span aria-hidden="true">
 												<i class="fa fa-angle-double-left" aria-hidden="true"></i>
 											</span>
                                                 </a>
                                             </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
+                                            <?php
+                                            if ($jobs['total']) {
+                                                for ($i = 1; $i <= $jobs['total']; $i++) {
+                                            ?>
+                                            <li class="page-item page-<?php echo $i ?> <?php echo $i == 1 ? 'active' : '' ?>">
+                                                <a href="javascript:void(0)" class="page-link" onclick="changePage(<?php echo $i ?>)"><?php echo $i ?></a>
                                             </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
+                                            <?php }} ?>
                                             <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">
+                                                <a href="javascript:void(0)" onclick="nextPage()" class="page-link">
 											<span aria-hidden="true">
 												<i class="fa fa-angle-double-right" aria-hidden="true"></i>
 											</span>
@@ -686,5 +663,58 @@ include "./app/views/sidebar.php";
                 }
             }
         });
+
+        $("select[name=job_type" ).change(function() {
+            $('input[name=job_type_hidden]').val($(this).val());
+        });
     });
+
+    function changePage(e = 1) {
+        $('input[name=current_page]').val(e);
+
+
+        var jobType = $('input[name=job_type_hidden]').val();
+        var country = $('input[name=where_search]').val();
+
+        $.ajax({
+            url: "?ctr=Job&action=paginateJobs",
+            type: "post",
+            data: {
+                'current_page' : e,
+                'job_type' : jobType,
+                'country' : country,
+            } ,
+            dataType : 'json',
+            success: function (data) {
+                if (data.status) {
+                    $('.list-job').empty();
+                    $('.pagination').empty();
+                    $('.list-job').append(data.info.text);
+                    $('.pagination').append(data.info.paginate);
+                }
+
+                $('.page-item').removeClass('active');
+                $('.page-' + e).addClass('active');
+                $('input[name=total_page]').val(data.info.total);
+            }
+        });
+
+    }
+
+    function prevPage() {
+        var page = $('input[name=current_page]').val();
+        if (page > 1) {
+            page = parseInt(page) - 1;
+        }
+        changePage(page);
+    }
+
+    function nextPage() {
+        var page = $('input[name=current_page]').val();
+        var totalPage = $('input[name=total_page]').val();
+        if (page < totalPage) {
+            page = parseInt(page) + 1;
+        }
+        changePage(page);
+    }
 </script>
