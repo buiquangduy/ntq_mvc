@@ -111,6 +111,46 @@ class JobModel
             'total' => $total
         ];
     }
+
+    public static function getByStaffId($staffId)
+    {
+        $db = Db::GetInstance();
+
+        $sql = "
+				select 	j.id as id,
+						j.staff_id as staff_id,
+						j.title as title,
+						j.content as content,
+						j.salary as salary,
+						j.country as country,
+						j.last_date as last_date,
+						jt.name as job_type,
+						j.job_category as job_category,
+						j.time_type as time_type,
+						j.image as image,
+						j.created_at as created_at
+				from job as j 
+				INNER JOIN job_type as jt 
+                ON j.job_type = jt.id 
+				where j.staff_id = {$staffId} 
+			";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $rs = $stmt->fetchAll();
+
+        $arr = [];
+        if (count($rs) > 0) {
+            foreach ($rs as $v) {
+                array_push($arr,
+                    new JobModel($v["id"], $v["staff_id"], $v["title"], $v["content"], $v["salary"], $v["country"], $v["last_date"],
+                        $v["job_type"], $v["job_category"], $v["time_type"], $v["image"], $v["created_at"])
+                );
+            }
+        }
+
+        return $arr;
+    }
 }
 
 ?>

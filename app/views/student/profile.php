@@ -146,7 +146,7 @@ include "./app/views/sidebar.php";
                                     <input type="hidden" name="current_page" value="1" />
                                     <input type="hidden" name="total_page" value="<?php echo $jobs['total'] ?>" />
                                     <nav class="job-pagination" aria-label="pagination">
-                                        <ul class="pagination">
+                                        <ul class="pagination pagination-job">
                                             <li class="page-item">
                                                 <a href="javascript:void(0)" onclick="prevPage()" class="page-link">
 											<span aria-hidden="true">
@@ -158,7 +158,7 @@ include "./app/views/sidebar.php";
                                             if ($jobs['total']) {
                                                 for ($i = 1; $i <= $jobs['total']; $i++) {
                                             ?>
-                                            <li class="page-item page-<?php echo $i ?> <?php echo $i == 1 ? 'active' : '' ?>">
+                                            <li class="page-item page-item-job page-<?php echo $i ?> <?php echo $i == 1 ? 'active' : '' ?>">
                                                 <a href="javascript:void(0)" class="page-link" onclick="changePage(<?php echo $i ?>)"><?php echo $i ?></a>
                                             </li>
                                             <?php }} ?>
@@ -522,12 +522,18 @@ include "./app/views/sidebar.php";
                                     <div class="col-md-3 pr-1"></div>
                                     <div class="col-md-3 pr-1">
                                         <div class="form-group">
+                                            <input type="hidden" name="job_type_intern_hidden" value="" />
                                             <label>Major</label>
                                             <select class="selectpicker" data-style="btn btn-primary btn-round btn-block"
                                                     multiple title="Your Major"
+                                                    name="job_type_intern"
                                                     data-size="2">
-                                                <option value="1">Engineering</option>
-                                                <option value="2">Hospitality</option>
+                                                <?php
+                                                if (!empty($jobTypes)) {
+                                                    foreach ($jobTypes as $jobType) {
+                                                        ?>
+                                                        <option value="<?php echo $jobType->id ?>"><?php echo $jobType->name ?></option>
+                                                    <?php }} ?>
                                             </select>
 
                                         </div>
@@ -540,83 +546,65 @@ include "./app/views/sidebar.php";
                                                    placeholder="Hobart,..."/>
                                         </div>
                                         <div class="form-group col-md-4" style="display: inline">
-                                            <button class="btn btn-primary">Search</button>
+                                            <a href="javascript:void(0)" class="btn btn-primary" onclick="changePageIntern()">Search</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 intern-list">
-                                        <div class="col-md-6">
-                                            <div class="card card-intern">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <a href="internship.html">Internship - Pagewood</a>
-                                                    </h4>
-                                                    <img class="img" src="https://www.seek.com.au/logos/Jobseeker/Thumbnail/9218"/>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p>
-                                                        Join a leading Australian Early Education
-                                                        Company<br />
-                                                        Lead a passionate team<br />
-                                                        New and innovative centre<br />
-                                                    </p>
-                                                </div>
-                                                <hr />
-                                                <div class="card-footer">
-                                                    <div class="stats">
-                                                        <i class="now-ui-icons ui-2_favourite-28"></i>
-                                                        Save
+                                        <div class="col-md-6 list-intern">
+                                            <?php
+                                            if ($jobInterns['total']) {
+                                                foreach ($jobInterns['data'] as $jobIntern) {
+                                                    ?>
+                                                    <div class="card card-intern">
+                                                        <div class="card-header">
+                                                            <h4 class="card-title">
+                                                                <a href="job.html"><?php echo $jobIntern->title ?></a>
+                                                            </h4>
+                                                            <img class="img" src="<?php echo $jobIntern->image ?>"/>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <p>
+                                                                <?php echo $jobIntern->content ?>
+                                                            </p>
+                                                            <h6>
+                                                                <i class="ti-time"></i>
+                                                                <?php echo $jobIntern->last_date ?>
+                                                            </h6>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="card-footer">
+                                                            <div class="stats">
+                                                                <i class="now-ui-icons ui-2_favourite-28"></i>
+                                                                Save
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card card-intern">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <a href="internship.html">Internship - Pagewood</a>
-                                                    </h4>
-                                                    <img class="img" src="https://www.seek.com.au/logos/Jobseeker/Thumbnail/9218"/>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p>
-                                                        Join a leading Australian Early Education
-                                                        Company<br />
-                                                        Lead a passionate team<br />
-                                                        New and innovative centre<br />
-                                                    </p>
-                                                </div>
-                                                <hr />
-                                                <div class="card-footer">
-                                                    <div class="stats">
-                                                        <i class="now-ui-icons ui-2_favourite-28"></i>
-                                                        Save
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <?php }} ?>
                                         </div>
                                     </div>
                                     <nav class="job-pagination" aria-label="pagination">
-                                        <ul class="pagination">
+                                        <input type="hidden" name="current_page_intern" value="1" />
+                                        <input type="hidden" name="total_page_intern" value="<?php echo $jobInterns['total'] ?>" />
+                                        <ul class="pagination pagination-intern">
                                             <li class="page-item">
-                                                <a href="#" class="page-link">
+                                                <a href="javascript:void(0)" onclick="prevPageIntern()" class="page-link">
 											<span aria-hidden="true">
 												<i class="fa fa-angle-double-left" aria-hidden="true"></i>
 											</span>
                                                 </a>
                                             </li>
+                                            <?php
+                                            if ($jobInterns['total']) {
+                                                for ($i = 1; $i <= $jobInterns['total']; $i++) {
+                                                    ?>
+                                                    <li class="page-item page-item-intern page-intern-<?php echo $i ?> <?php echo $i == 1 ? 'active' : '' ?>">
+                                                        <a href="javascript:void(0)" class="page-link" onclick="changePageIntern(<?php echo $i ?>)"><?php echo $i ?></a>
+                                                    </li>
+                                                <?php }} ?>
                                             <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">
+                                                <a href="javascript:void(0)" onclick="nextPageIntern()" class="page-link">
 											<span aria-hidden="true">
 												<i class="fa fa-angle-double-right" aria-hidden="true"></i>
 											</span>
@@ -667,6 +655,10 @@ include "./app/views/sidebar.php";
         $("select[name=job_type" ).change(function() {
             $('input[name=job_type_hidden]').val($(this).val());
         });
+
+        $("select[name=job_type_intern" ).change(function() {
+            $('input[name=job_type_intern_hidden]').val($(this).val());
+        });
     });
 
     function changePage(e = 1) {
@@ -683,17 +675,18 @@ include "./app/views/sidebar.php";
                 'current_page' : e,
                 'job_type' : jobType,
                 'country' : country,
+                'category' : 1,
             } ,
             dataType : 'json',
             success: function (data) {
                 if (data.status) {
                     $('.list-job').empty();
-                    $('.pagination').empty();
+                    $('.pagination-job').empty();
                     $('.list-job').append(data.info.text);
-                    $('.pagination').append(data.info.paginate);
+                    $('.pagination-job').append(data.info.paginate);
                 }
 
-                $('.page-item').removeClass('active');
+                $('.page-item-job').removeClass('active');
                 $('.page-' + e).addClass('active');
                 $('input[name=total_page]').val(data.info.total);
             }
@@ -716,5 +709,56 @@ include "./app/views/sidebar.php";
             page = parseInt(page) + 1;
         }
         changePage(page);
+    }
+
+    //for intern
+    function changePageIntern(e = 1) {
+        $('input[name=current_page_intern]').val(e);
+
+
+        var jobType = $('input[name=job_type_intern_hidden]').val();
+        var country = $('input[name=where_search_intern]').val();
+
+        $.ajax({
+            url: "?ctr=Job&action=paginateJobs",
+            type: "post",
+            data: {
+                'current_page' : e,
+                'job_type' : jobType,
+                'country' : country,
+                'category' : 2,
+            } ,
+            dataType : 'json',
+            success: function (data) {
+                if (data.status) {
+                    $('.list-intern').empty();
+                    $('.pagination-intern').empty();
+                    $('.list-intern').append(data.info.text);
+                    $('.pagination-intern').append(data.info.paginate);
+                }
+
+                $('.page-item-intern').removeClass('active');
+                $('.page-intern-' + e).addClass('active');
+                $('input[name=total_page_intern]').val(data.info.total);
+            }
+        });
+
+    }
+
+    function prevPageIntern() {
+        var page = $('input[name=current_page_intern]').val();
+        if (page > 1) {
+            page = parseInt(page) - 1;
+        }
+        changePageIntern(page);
+    }
+
+    function nextPageIntern() {
+        var page = $('input[name=current_page_intern]').val();
+        var totalPage = $('input[name=total_page_intern]').val();
+        if (page < totalPage) {
+            page = parseInt(page) + 1;
+        }
+        changePageIntern(page);
     }
 </script>

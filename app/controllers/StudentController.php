@@ -13,6 +13,7 @@ class StudentController
     public function profile()
     {
         $jobs = JobModel::getByJobType();
+        $jobInterns = JobModel::getByJobType(2);
         $jobTypes = JobTypeModel::getAll();
 
         include "./app/views/student/profile.php";

@@ -12,12 +12,22 @@ class JobController
         $currentPage = $_POST['current_page'];
         $jobType = $_POST['job_type'];
         $country = $_POST['country'];
-        $jobs = JobModel::getByJobType(1, $jobType, $country, $currentPage);
+        $category = $_POST['category'];
+        $jobs = JobModel::getByJobType($category, $jobType, $country, $currentPage);
 
         $textApply = '';
         if (!empty($jobs['data'])) {
             foreach ($jobs['data'] as $job) {
-                $textApply .= "<div class='card card-job'>
+                $card = "card-job";
+                $pre = "prevPage()";
+                $next = "nextPage()";
+                if ($category == 2) {
+                    $card = "card-intern";
+                    $pre = "prevPageIntern()";
+                    $next = "nextPageIntern()";
+                }
+
+                $textApply .= "<div class='card {$card}'>
                                     <div class='card-header'>
                                         <h4 class='card-title'>
                                             <a href='job.html'>{$job->title}</a>
@@ -46,7 +56,7 @@ class JobController
         }
 
         $textApplyPaginate = "<li class='page-item'>
-                                        <a href='javascript:void(0)' onclick='prevPage()' class='page-link'>
+                                        <a href='javascript:void(0)' onclick='{$pre}' class='page-link'>
                                         <span aria-hidden='true'>
                                             <i class='fa fa-angle-double-left' aria-hidden='true'></i>
                                         </span>
@@ -55,14 +65,17 @@ class JobController
         if ($jobs['total']) {
             for ($i = 1; $i <= $jobs['total']; $i++) {
                 $active = ($i == 1) ? 'active' : '';
-                $textApplyPaginate .= "<li class='page-item page-$i $active'>
-                                        <a href='javascript:void(0)' class='page-link' onclick='changePage($i)'>$i</a>
+                $changePage = $category == 1 ? "changePage($i)" : "changePageIntern($i)";
+                $pageClass = $category == 1 ? "page-$i" : "page-intern-$i";
+                $pageItemClass = $category == 1 ? "page-item-job" : "page-item-intern";
+                $textApplyPaginate .= "<li class='page-item $pageItemClass $pageClass $active'>
+                                        <a href='javascript:void(0)' class='page-link' onclick='{$changePage}'>$i</a>
                                     </li>";
             }
         }
 
         $textApplyPaginate .= "<li class=\"page-item\">
-                                        <a href=\"javascript:void(0)\" onclick=\"nextPage()\" class=\"page-link\">
+                                        <a href=\"javascript:void(0)\" onclick=\"{$next}\" class=\"page-link\">
                                         <span aria-hidden=\"true\">
                                             <i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>
                                         </span>
@@ -79,6 +92,32 @@ class JobController
             echo json_encode([
                 'status' => true,
                 'info' => $jobs,
+            ]);
+        } else {
+            echo json_encode([
+                'status' => false,
+                'err' => 'fail',
+            ]);
+        }
+        exit();
+    }
+
+    public function getByStaffId()
+    {
+        $id = $_SESSION['staff_id'];
+
+        $jobsByStaffId = JobModel::getByStaffId($id);
+
+        ob_start();
+        include "./app/views/staff/job_table.php";
+        $template = ob_get_clean();
+
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json');
+        if (!empty($jobsByStaffId)) {
+            echo json_encode([
+                'status' => true,
+                'info' => $template,
             ]);
         } else {
             echo json_encode([

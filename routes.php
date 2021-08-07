@@ -32,7 +32,7 @@ function Call($controller, $action)
 $listCtr = [
     "Student" => ["profile", "getDataProfile", "notFound", "login", "logout", "home"],
     "Staff" => ["profile", "getDataProfile", "notFound", "login", "logout"],
-    "Job" => ["paginateJobs"],
+    "Job" => ["paginateJobs", "getByStaffId"],
 ];
 
 if (array_key_exists($ctr, $listCtr)) {
