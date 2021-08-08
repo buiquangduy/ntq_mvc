@@ -7,6 +7,8 @@ class StaffController
      */
     public function profile()
     {
+        $jobTypes = JobTypeModel::getAll();
+
         include "./app/views/staff/profile.php";
     }
 

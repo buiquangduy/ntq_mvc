@@ -55,13 +55,9 @@ include "./app/views/sidebar.php";
                                             <label>Job types</label>
                                             <div class="dropdown bootstrap-select show-tick">
                                                 <select class="selectpicker" data-style="btn btn-primary btn-round btn-block" multiple="" title="Any Classification" data-size="7" tabindex="-98">
-                                                    <option value="1">Accounting</option>
-                                                    <option value="2">Administration</option>
-                                                    <option value="3">Advertising</option>
-                                                    <option value="4">Banking</option>
-                                                    <option value="5">CEO</option>
-                                                    <option value="6">Construction</option>
-                                                    <option value="7">Consulting and Strategy</option>
+                                                    <?php foreach ($jobTypes as $type): ?>
+                                                    <option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -76,124 +72,9 @@ include "./app/views/sidebar.php";
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 candidate-list">
-                                        <div class="col-md-6">
-                                            <div class="card card-can">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <a href="#">Minh Khoi Nguyen</a>
-                                                    </h4>
-                                                    <p>Frontend developer</p>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6>
-                                                        <button class="btn btn-outline-success btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                        </button>
-                                                        4 years of experience
-                                                        <button class="ml-3 btn btn-outline-success btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                        </button>
-                                                        Right to work in Australia
-                                                    </h6>
-                                                    <h6>
-                                                        <button class="btn btn-outline-danger btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                        </button>
-                                                        Driver license
-                                                    </h6>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-outline-info">
-                                                            Resume
-                                                        </button>
-                                                        <button type="button" class="btn btn-info">
-                                                            Cover letter
-                                                        </button>
-                                                    </div>
-                                                    <div class="btn-group pull-right">
-                                                        <button class="btn btn-outline-success">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                            Short list
-                                                        </button>
-                                                        <button class="btn btn-outline-danger ml-2">
-                                                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                            Not suitable
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card card-can">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <a href="#">Minh Khoi Nguyen</a>
-                                                    </h4>
-                                                    <p>Frontend developer</p>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6>
-                                                        <button class="btn btn-outline-success btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                        </button>
-                                                        4 years of experience
-                                                        <button class="ml-3 btn btn-outline-success btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                        </button>
-                                                        Right to work in Australia
-                                                    </h6>
-                                                    <h6>
-                                                        <button class="btn btn-outline-danger btn-round btn-icon">
-                                                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                        </button>
-                                                        Driver license
-                                                    </h6>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-outline-info">
-                                                            Resume
-                                                        </button>
-                                                        <button type="button" class="btn btn-info">
-                                                            Cover letter
-                                                        </button>
-                                                    </div>
-                                                    <div class="btn-group pull-right">
-                                                        <button class="btn btn-outline-success">
-                                                            <i class="now-ui-icons ui-1_check"></i>
-                                                            Short list
-                                                        </button>
-                                                        <button class="btn btn-outline-danger ml-2">
-                                                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                            Not suitable
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <nav class="job-pagination" aria-label="pagination">
-                                        <ul class="pagination">
-                                            <li class="page-item">
-                                                <a href="#" class="page-link"><span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span></a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">1</a>
-                                            </li>
-                                            <li class="page-item active">
-                                                <a href="#" class="page-link">2</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link">3</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a href="#" class="page-link"><span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                <input type="hidden" name="current_page" value="1" />
+                                <div class="row student-apply-job">
+
                                 </div>
                             </div>
                             <div class="tab-pane active" id="link2">
@@ -458,5 +339,53 @@ include "./app/views/sidebar.php";
                 }
             }
         });
+
+        changePage();
     });
+
+    function changePage(e = 1) {
+        $('input[name=current_page]').val(e);
+
+
+        var jobType = $('input[name=job_type_hidden]').val();
+        var country = $('input[name=where_search]').val();
+
+        $.ajax({
+            url: "?ctr=Job&action=paginateStudentApplyJobs",
+            type: "post",
+            data: {
+                'current_page' : e,
+                'job_type' : jobType,
+                'country' : country
+            } ,
+            dataType : 'json',
+            success: function (data) {
+                if (data.status) {
+                    $('.student-apply-job').empty();
+                    $('.student-apply-job').append(data.info);
+                }
+
+                $('.page-item').removeClass('active');
+                $('.page-' + e).addClass('active');
+            }
+        });
+
+    }
+
+    function prevPage() {
+        var page = $('input[name=current_page]').val();
+        if (page > 1) {
+            page = parseInt(page) - 1;
+        }
+        changePage(page);
+    }
+
+    function nextPage() {
+        var page = $('input[name=current_page]').val();
+        var totalPage = $('input[name=total_page]').val();
+        if (page < totalPage) {
+            page = parseInt(page) + 1;
+        }
+        changePage(page);
+    }
 </script>

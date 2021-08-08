@@ -119,13 +119,13 @@ include "./app/views/sidebar.php";
                                             <div class="card card-job">
                                                 <div class="card-header">
                                                     <h4 class="card-title">
-                                                        <a href="job.html"><?php echo $job->title ?></a>
+                                                        <a href="/?ctr=Job&action=detail&id=<?php echo $job->id ?>"><?php echo $job->title ?></a>
                                                     </h4>
                                                     <img class="img" src="<?php echo $job->image ?>"/>
                                                 </div>
                                                 <div class="card-body">
                                                     <p>
-                                                        <?php echo $job->content ?>
+                                                        <?php echo $job->description ?>
                                                     </p>
                                                     <h6>
                                                         <i class="ti-time"></i>
@@ -566,7 +566,7 @@ include "./app/views/sidebar.php";
                                                         </div>
                                                         <div class="card-body">
                                                             <p>
-                                                                <?php echo $jobIntern->content ?>
+                                                                <?php echo $jobIntern->description ?>
                                                             </p>
                                                             <h6>
                                                                 <i class="ti-time"></i>

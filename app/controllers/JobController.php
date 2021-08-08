@@ -36,7 +36,7 @@ class JobController
                                     </div>
                                     <div class='card-body'>
                                         <p>
-                                        {$job->content}
+                                        {$job->description}
                                         </p>
                                         <h6>
                                             <i class='ti-time'></i>
@@ -126,6 +126,41 @@ class JobController
             ]);
         }
         exit();
+    }
+
+    public function paginateStudentApplyJobs()
+    {
+        $currentPage = $_POST['current_page'];
+        $jobType = $_POST['job_type'];
+        $country = $_POST['country'];
+        $studentApplyJobs = JobModel::studentsApplyJob($jobType, $country, $currentPage);
+
+        ob_start();
+        include "./app/views/student/apply_job.php";
+        $template = ob_get_clean();
+
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json');
+        if (!empty($studentApplyJobs)) {
+            echo json_encode([
+                'status' => true,
+                'info' => $template,
+            ]);
+        } else {
+            echo json_encode([
+                'status' => false,
+                'err' => 'fail',
+            ]);
+        }
+        exit();
+    }
+
+    public function detail()
+    {
+        $id = $_GET['id'];
+        $job = JobModel::getDetail($id);
+
+        include './app/views/job/detail.php';
     }
 }
 

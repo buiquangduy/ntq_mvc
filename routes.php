@@ -5,6 +5,7 @@ function Call($controller, $action)
     switch ($controller) {
         case 'Staff':
             require_once("./app/models/StaffModel.php");
+            require_once("./app/models/JobTypeModel.php");
             $ctr = new StaffController();
             $ctr->{$action}();
             break;
@@ -32,7 +33,7 @@ function Call($controller, $action)
 $listCtr = [
     "Student" => ["profile", "getDataProfile", "notFound", "login", "logout", "home"],
     "Staff" => ["profile", "getDataProfile", "notFound", "login", "logout"],
-    "Job" => ["paginateJobs", "getByStaffId"],
+    "Job" => ["paginateJobs", "getByStaffId", "paginateStudentApplyJobs", "detail"],
 ];
 
 if (array_key_exists($ctr, $listCtr)) {
