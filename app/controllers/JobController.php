@@ -184,6 +184,51 @@ class JobController
             'status' => true
         ]);
     }
+
+    public function uploadPdf()
+    {
+        if($_FILES['resume']['name'] != ''){
+            $file = explode('.', $_FILES['resume']['name']);
+            $extension = end($file);
+
+            $name = 'student_job_resume_'. $_POST['id'] .'.'.$extension;
+
+            $location = './app/uploads/' . $name;
+            move_uploaded_file($_FILES['resume']['tmp_name'], $location);
+//            StudentModel::updateResumeProfile($location);
+        }
+
+        if($_FILES['cover_letter']['name'] != ''){
+            $file = explode('.', $_FILES['cover_letter']['name']);
+            $extension = end($file);
+
+            $name = 'student_job_cover_letter_'. $_POST['id'] .'.'.$extension;
+
+            $location = './app/uploads/' . $name;
+            move_uploaded_file($_FILES['cover_letter']['tmp_name'], $location);
+//            StudentModel::updateResumeProfile($location);
+        }
+
+        if($_FILES['selection_criteria']['name'] != ''){
+            $file = explode('.', $_FILES['selection_criteria']['name']);
+            $extension = end($file);
+
+            $name = 'student_job_selection_criteria_'. $_POST['id'] .'.'.$extension;
+
+            $location = './app/uploads/' . $name;
+            move_uploaded_file($_FILES['selection_criteria']['tmp_name'], $location);
+//            StudentModel::updateResumeProfile($location);
+        }
+
+
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json');
+        echo json_encode([
+            'status' => true,
+            'resume' => $location,
+        ]);
+        exit();
+    }
 }
 
 ?>

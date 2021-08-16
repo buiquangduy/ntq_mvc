@@ -466,10 +466,13 @@ include "./app/views/sidebar.php";
                                                                 />
                                                                 <input
                                                                     type="file"
+                                                                    id="file"
                                                                     class="inputFileHidden"
+                                                                    accept=".pdf"
                                                                 />
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-4" style="padding-top: 40px"><a href="" target="_blank" class="file_pdf">view resume</a></div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -655,6 +658,7 @@ include "./app/views/sidebar.php";
                     $('.description').empty();
                     $('.description').html(data.info.description);
                     $('textarea[name=about_me]').val(data.info.description);
+                    $('.file_pdf').attr("href", data.info.resume);
                 }
             }
         });
@@ -665,6 +669,33 @@ include "./app/views/sidebar.php";
 
         $("select[name=job_type_intern" ).change(function() {
             $('input[name=job_type_intern_hidden]').val($(this).val());
+        });
+
+        $('#file').change(function () {
+            var property = document.getElementById('file').files[0];
+            var file_name = property.name;
+            var file_extension = file_name.split('.').pop().toLowerCase();
+
+            if(jQuery.inArray(file_extension, ['pdf']) == -1){
+                alert("Invalid pdf file");
+            }
+
+            var form_data = new FormData();
+            form_data.append("file", property);
+            $.ajax({
+                url:'?ctr=Student&action=uploadResume',
+                method:'POST',
+                data:form_data,
+                contentType:false,
+                cache:false,
+                processData:false,
+                success:function(data){
+                    if(data.status) {
+                        $('.file_pdf').attr("href", data.resume);
+                        alert('Upload file ok!')
+                    }
+                }
+            });
         });
     });
 

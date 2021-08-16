@@ -32,9 +32,9 @@ function Call($controller, $action)
 }
 
 $listCtr = [
-    "Student" => ["profile", "getDataProfile", "notFound", "login", "logout", "home", "updateProfile", "changeEducation", "removeEducation"],
+    "Student" => ["profile", "getDataProfile", "notFound", "login", "logout", "home", "updateProfile", "changeEducation", "removeEducation", "uploadResume"],
     "Staff" => ["profile", "getDataProfile", "notFound", "login", "logout", "updateProfile"],
-    "Job" => ["paginateJobs", "getByStaffId", "paginateStudentApplyJobs", "detail", "shortList", "notSuitable"],
+    "Job" => ["paginateJobs", "getByStaffId", "paginateStudentApplyJobs", "detail", "shortList", "notSuitable", "uploadPdf"],
 ];
 
 if (array_key_exists($ctr, $listCtr)) {
